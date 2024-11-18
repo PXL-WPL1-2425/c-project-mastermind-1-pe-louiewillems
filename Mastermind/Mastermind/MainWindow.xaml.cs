@@ -57,6 +57,9 @@ namespace Mastermind
 
         }
 
+        /// <summary>
+        /// The player has only 10 seconds to complete one phase. The timer starts at 1 and ends at 10
+        /// </summary>
         private void StartCountdown()
         {
             _timerAttempt = 1;
@@ -66,6 +69,10 @@ namespace Mastermind
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Start();
         }
+
+        /// <summary>
+        /// When the running timer reaches 10, the attempt will increase. After, the coundown will start again.
+        /// </summary>
         private void StopCountdown()
         {
             _timerAttempt++;
@@ -109,7 +116,7 @@ namespace Mastermind
                 }
                 else
                 {
-                    mainWindow.Title = $"Correct";
+                    mainWindow.Title = $"Correct!!";
                     _timer.Stop();
                 }
             }
@@ -222,6 +229,10 @@ namespace Mastermind
             }
 #endif
         }
+        
+        /// <summary>
+        /// Check the color code in debug mode
+        /// </summary>
         private void ToggleDebug()
         {
             string selectedColorString = string.Join(',', selectedColors.Select(x => x.name));
