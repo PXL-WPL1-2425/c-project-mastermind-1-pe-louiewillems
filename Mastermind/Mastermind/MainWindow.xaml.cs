@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Mastermind
 {
@@ -10,6 +11,8 @@ namespace Mastermind
 
         private int attempts = 0;
         private bool isCorrect = false;
+        private DispatcherTimer _timer;
+        private int _timerAttempt = 0;
 
         private List<(string name, SolidColorBrush color)> selectedColors = new List<(string name, SolidColorBrush color)>();
         private readonly List<(string name, SolidColorBrush color)> _colorOptions = new List<(string, SolidColorBrush)>()
@@ -21,6 +24,8 @@ namespace Mastermind
             ("Green", Brushes.Green),
             ("Blue", Brushes.Blue)
         };
+
+
         private readonly List<Label> _labels = new List<Label>();
         private readonly List<ComboBox> _comboBoxes = new List<ComboBox>();
 
@@ -48,6 +53,33 @@ namespace Mastermind
                 _comboBoxes[i].SelectionChanged += OnDropdownSelection;
             }
 
+            StartCountdown();
+
+        }
+
+        private void StartCountdown()
+        {
+            _timerAttempt = 1;
+            _timer?.Stop();
+            _timer = new DispatcherTimer();
+            _timer.Tick += AttemptFinishedTimer;
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Start();
+        }
+        //private void StopCountdown()
+        //{
+
+        //}
+
+
+        private void AttemptFinishedTimer(object? sender, EventArgs e)
+        {
+            _timerAttempt++;
+
+            //if (_timerAttempt == 10)
+            //{
+            //    attempts++;
+            //}
         }
 
         private void validateButton_Click(object sender, RoutedEventArgs e)
@@ -68,16 +100,16 @@ namespace Mastermind
 
                 ControlColors(selectedColors.Select(x => x.name).ToArray());
 
-                //mainWindow.Title = $"Mastermind ({selectedColorString})";
-
                 if (!isCorrect)
                 {
                     attempts++;
                     mainWindow.Title = $"Poging {attempts}";
+                    StartCountdown();
                 }
                 else
                 {
-                    //mainWindow.Title = $"Correct";
+                    mainWindow.Title = $"Correct";
+                    _timer.Stop();
                 }
             }
         }
@@ -177,9 +209,6 @@ namespace Mastermind
 
             mainWindow.Title = "Mastermind";
         }
-
-
-
 
         private void mainWindow_KeyDown(object sender, KeyEventArgs e)
         {
