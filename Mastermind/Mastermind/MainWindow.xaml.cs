@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Mastermind
@@ -10,7 +11,7 @@ namespace Mastermind
         private int attempts = 0;
         private bool isCorrect = false;
 
-        private List<(string name, SolidColorBrush color)> selectedColors = new List<(string name, SolidColorBrush color)> ();
+        private List<(string name, SolidColorBrush color)> selectedColors = new List<(string name, SolidColorBrush color)>();
         private readonly List<(string name, SolidColorBrush color)> _colorOptions = new List<(string, SolidColorBrush)>()
         {
             ("Red", Brushes.Red),
@@ -176,6 +177,28 @@ namespace Mastermind
 
             mainWindow.Title = "Mastermind";
         }
+
+
+
+
+        private void mainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+#if DEBUG
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl) &&
+                 e.Key == Key.F12
+                 )
+            {
+                ToggleDebug();
+            }
+#endif
+        }
+        private void ToggleDebug()
+        {
+            string selectedColorString = string.Join(',', selectedColors.Select(x => x.name));
+            MessageBox.Show($"Generated colorcode {selectedColorString}", "Debug", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+
 
     }
 }

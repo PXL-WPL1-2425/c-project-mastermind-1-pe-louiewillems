@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Mastermind"
         mc:Ignorable="d"
         Title="Mastermind" Height="450" Width="800"
-        x:Name="mainWindow"
+        x:Name="mainWindow" KeyDown="mainWindow_KeyDown" 
         >
     <Grid ShowGridLines="True">
 
