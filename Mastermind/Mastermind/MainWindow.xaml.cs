@@ -66,20 +66,21 @@ namespace Mastermind
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Start();
         }
-        //private void StopCountdown()
-        //{
-
-        //}
+        private void StopCountdown()
+        {
+            _timerAttempt++;
+            if (_timerAttempt == 10)
+            {
+                attempts++;
+                mainWindow.Title = $"Poging {attempts}";
+                StartCountdown();
+            }
+        }
 
 
         private void AttemptFinishedTimer(object? sender, EventArgs e)
         {
-            _timerAttempt++;
-
-            //if (_timerAttempt == 10)
-            //{
-            //    attempts++;
-            //}
+            StopCountdown();
         }
 
         private void validateButton_Click(object sender, RoutedEventArgs e)
